@@ -12,7 +12,7 @@ sealed class Item {
 data class Category(
     @DrawableRes val image: Int,
     val title: String,
-    val expressions: List<String>
+    val expressions: List<Expression>
 ) : Item() {
     override fun getType(): Type {
         return Type.TOPIC

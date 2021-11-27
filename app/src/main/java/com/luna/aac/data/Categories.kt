@@ -5,7 +5,7 @@ import com.luna.aac.R
 val categoryItems = listOf(
     Category(R.drawable.ic_launcher_background, "dummy", emptyList()),
     Category(R.drawable.general_0, "일상", emptyList()),
-    Category(R.drawable.help_0, "도움, \n 요구하기", emptyList()),
+    Category(R.drawable.help_0, "도움, \n 요구하기", helpExpressions),
     Category(R.drawable.answer_0, "대답하기", emptyList()),
     Category(R.drawable.ask_0, "질문하기", emptyList()),
     Category(R.drawable.feeling_0, "감정", emptyList()),
