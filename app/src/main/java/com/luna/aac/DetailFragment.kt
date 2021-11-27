@@ -60,6 +60,8 @@ class DetailFragment : Fragment() {
                             parentCallback.onBackMainScreen()
                             return
                         }
+
+                        parentCallback.onSelectExpression(selectedItem)
                         itemAdapter.notifyDataSetChanged()
                     }
 

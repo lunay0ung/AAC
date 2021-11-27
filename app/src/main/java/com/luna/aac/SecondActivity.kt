@@ -11,9 +11,11 @@ import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import com.luna.aac.DetailFragment.Companion.ITEM_TITLE
+import com.luna.aac.data.Expression
 import com.luna.aac.data.Item
 import com.luna.aac.data.categoryItems
 import com.luna.aac.databinding.ActivitySecondBinding
+import kotlin.math.exp
 
 @SuppressLint("NotifyDataSetChanged")
 class SecondActivity : FragmentActivity(), ParentCallback {
@@ -46,8 +48,7 @@ class SecondActivity : FragmentActivity(), ParentCallback {
                     object : ItemAdapter.ItemClickListener {
                         override fun onClickItem(item: Item) {
                             selectedItem = item
-                            editText.text?.clear()
-                            editText.setText(selectedItem.getItemTitle())
+
                             showExpressions(item)
                             itemAdapter.notifyDataSetChanged()
                         }
@@ -60,12 +61,26 @@ class SecondActivity : FragmentActivity(), ParentCallback {
                 adapter = itemAdapter
             }
 
-            headerLayout.homeButton.setOnClickListener {
-                removeExpressions()
-            }
+            headerLayout.apply {
+                this.motherButton.setOnClickListener {
+                    editText.setText("엄마,")
+                }
 
-            headerLayout.cancelButton.setOnClickListener {
-                editText.text?.clear()
+                this.teacherButton.setOnClickListener {
+                    editText.setText("선생님,")
+                }
+
+                this.helpButton.setOnClickListener {
+                    editText.setText("저기요,")
+                }
+
+                this.homeButton.setOnClickListener {
+                    removeExpressions()
+                }
+
+                this.cancelButton.setOnClickListener {
+                    editText.text?.clear()
+                }
             }
         }
     }
@@ -95,6 +110,12 @@ class SecondActivity : FragmentActivity(), ParentCallback {
         supportFragmentManager.beginTransaction()
             .remove(fragment)
             .commitNowAllowingStateLoss()
+    }
+
+    override fun onSelectExpression(expression: Expression) {
+        editText.setSelection(editText.text.length)
+        editText.append(" "+expression.title)
+        editText.setSelection(editText.text.length)
     }
 
     override fun onBackMainScreen() {
