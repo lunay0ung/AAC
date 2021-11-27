@@ -7,5 +7,6 @@ task clean(type: Delete) {
 buildscript {
     ext {
         compose_version = '1.0.5'
+        lifecycle_version = '2.4.0'
     }
 }
