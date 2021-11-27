@@ -21,6 +21,11 @@ class SecondActivity : FragmentActivity(), ParentCallback {
     private lateinit var mainViewModel: MainViewModel
     private lateinit var binding: ActivitySecondBinding
     private lateinit var itemAdapter: ItemAdapter
+
+    private val editText by lazy {
+        binding.headerLayout.editText
+    }
+
     private var selectedItem = categoryItems[0] as Item
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -40,6 +45,8 @@ class SecondActivity : FragmentActivity(), ParentCallback {
                     object : ItemAdapter.ItemClickListener {
                         override fun onClickItem(item: Item) {
                             selectedItem = item
+                            editText.text?.clear()
+                            editText.setText(selectedItem.getItemTitle())
                             showExpressions(item)
                             itemAdapter.notifyDataSetChanged()
                         }
@@ -54,6 +61,10 @@ class SecondActivity : FragmentActivity(), ParentCallback {
 
             headerLayout.homeButton.setOnClickListener {
                 removeExpressions()
+            }
+
+            headerLayout.cancelButton.setOnClickListener {
+                editText.text?.clear()
             }
         }
     }
