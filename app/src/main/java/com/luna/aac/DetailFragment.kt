@@ -6,6 +6,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.GridLayoutManager
 import com.luna.aac.data.Category
 import com.luna.aac.data.Expression
@@ -16,7 +18,9 @@ import com.luna.aac.databinding.FragmentDetailBinding
 @SuppressLint("NotifyDataSetChanged")
 class DetailFragment : Fragment() {
 
+    private lateinit var mainViewModel: MainViewModel
     private lateinit var binding: FragmentDetailBinding
+    private lateinit var parentCallback: ParentCallback
     private lateinit var itemAdapter: ItemAdapter
     private var categoryTitle: String = ""
     private lateinit var expressions: List<Expression>
@@ -31,6 +35,9 @@ class DetailFragment : Fragment() {
             .apply {
                 lifecycleOwner = viewLifecycleOwner
             }
+        mainViewModel = ViewModelProvider(requireActivity()).get(MainViewModel::class.java).apply {
+            this@DetailFragment.parentCallback = this.parentCallback
+        }
         return binding.root
     }
 
@@ -49,6 +56,10 @@ class DetailFragment : Fragment() {
                 itemAdapter = ItemAdapter(expressions, object : ItemAdapter.ItemClickListener {
                     override fun onClickItem(item: Item) {
                         selectedItem = item as Expression
+                        if (selectedItem.title == "뒤로 가기") {
+                            parentCallback.onBackMainScreen()
+                            return
+                        }
                         itemAdapter.notifyDataSetChanged()
                     }
 

@@ -2,10 +2,13 @@ package com.luna.aac
 
 import android.annotation.SuppressLint
 import android.os.Bundle
+import android.util.Log
 import android.view.View
+import androidx.activity.viewModels
 import androidx.core.os.bundleOf
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.FragmentActivity
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import com.luna.aac.DetailFragment.Companion.ITEM_TITLE
 import com.luna.aac.data.Item
@@ -13,8 +16,9 @@ import com.luna.aac.data.categoryItems
 import com.luna.aac.databinding.ActivitySecondBinding
 
 @SuppressLint("NotifyDataSetChanged")
-class SecondActivity : FragmentActivity() {
+class SecondActivity : FragmentActivity(), ParentCallback {
 
+    private lateinit var mainViewModel: MainViewModel
     private lateinit var binding: ActivitySecondBinding
     private lateinit var itemAdapter: ItemAdapter
     private var selectedItem = categoryItems[0] as Item
@@ -22,6 +26,9 @@ class SecondActivity : FragmentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_second)
+        mainViewModel = ViewModelProvider(this).get(MainViewModel::class.java).apply {
+            this.parentCallback = this@SecondActivity
+        }
 
         initUi()
     }
@@ -46,12 +53,7 @@ class SecondActivity : FragmentActivity() {
             }
 
             headerLayout.homeButton.setOnClickListener {
-                recyclerView.visibility = View.VISIBLE
-                val fragment = supportFragmentManager.findFragmentById(binding.fragmentContainer.id)
-                    ?: return@setOnClickListener
-                supportFragmentManager.beginTransaction()
-                    .remove(fragment)
-                    .commitNowAllowingStateLoss()
+                removeExpressions()
             }
         }
     }
@@ -62,7 +64,7 @@ class SecondActivity : FragmentActivity() {
         val bundle = bundleOf(
             ITEM_TITLE to item.getItemTitle()
         )
-        if(fragment == null) {
+        if (fragment == null) {
             fragment = DetailFragment.newInstance()
             fragment.arguments = bundle
             transaction.add(binding.fragmentContainer.id, fragment)
@@ -72,6 +74,19 @@ class SecondActivity : FragmentActivity() {
         }
         binding.recyclerView.visibility = View.INVISIBLE
         transaction.commitAllowingStateLoss()
+    }
+
+    private fun removeExpressions() {
+        binding.recyclerView.visibility = View.VISIBLE
+        val fragment = supportFragmentManager.findFragmentById(binding.fragmentContainer.id)
+            ?: return
+        supportFragmentManager.beginTransaction()
+            .remove(fragment)
+            .commitNowAllowingStateLoss()
+    }
+
+    override fun onBackMainScreen() {
+        removeExpressions()
     }
 
     override fun onDestroy() {
