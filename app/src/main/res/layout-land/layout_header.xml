@@ -44,10 +44,10 @@
             android:layout_height="100dp"
             android:layout_margin="10dp"
             android:background="@drawable/background_edit_text"
+            android:hint="완성된 문장"
             android:inputType="text"
             android:lines="1"
             android:maxLines="1"
-            android:hint="완성된 문장"
             android:paddingStart="10dp"
             android:paddingEnd="45dp"
             android:textSize="30sp"
@@ -63,9 +63,9 @@
             android:layout_height="100dp"
             android:layout_marginEnd="10dp"
             android:src="@drawable/cancel"
-            app:layout_constraintTop_toTopOf="@id/edit_text"
             app:layout_constraintBottom_toBottomOf="@id/edit_text"
-            app:layout_constraintEnd_toEndOf="@id/edit_text" />
+            app:layout_constraintEnd_toEndOf="@id/edit_text"
+            app:layout_constraintTop_toTopOf="@id/edit_text" />
 
         <ImageView
             android:id="@+id/home_button"
@@ -73,8 +73,17 @@
             android:layout_height="100dp"
             android:layout_margin="10dp"
             android:src="@drawable/home"
+            android:visibility="invisible"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
+        <ImageView
+            android:id="@+id/speak_button"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_margin="10dp"
+            android:src="@drawable/speak"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
