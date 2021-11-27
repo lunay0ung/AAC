@@ -23,6 +23,10 @@ class SecondActivity : FragmentActivity(), ParentCallback {
     private lateinit var itemAdapter: ItemAdapter
     private var selectedItem = categoryItems[0] as Item
 
+    private val editText by lazy {
+        binding.headerLayout.editText
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_second)
@@ -40,6 +44,8 @@ class SecondActivity : FragmentActivity(), ParentCallback {
                     object : ItemAdapter.ItemClickListener {
                         override fun onClickItem(item: Item) {
                             selectedItem = item
+                            editText.text?.clear()
+                            editText.setText(selectedItem.getItemTitle())
                             showExpressions(item)
                             itemAdapter.notifyDataSetChanged()
                         }
