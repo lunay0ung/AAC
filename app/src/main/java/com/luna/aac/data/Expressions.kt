@@ -3,7 +3,17 @@ package com.luna.aac.data
 import com.luna.aac.R
 
 val generalExpressions = listOf(
-    R.drawable.general_0, "일상"
+    Expression(R.drawable.thanks, "고마워요"),
+    Expression(R.drawable.respect_hi, "안녕하세요"),
+    Expression(R.drawable.leave_bye, "안녕히 계세요"),
+    Expression(R.drawable.together, "같이 해요"),
+    Expression(R.drawable.lookatthis, "이것 보세요"),
+    Expression(R.drawable.iamdone, "다했어요"),
+    Expression(R.drawable.sorry, "미안해요"),
+    Expression(R.drawable.hi, "안녕"),
+    Expression(R.drawable.go_bye, "안녕히 가세요"),
+    Expression(R.drawable.mine, "내꺼예요"),
+    Expression(R.drawable.your_turn, "당신 차례예요")
 )
 
 val helpExpressions = listOf(
