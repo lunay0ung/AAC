@@ -13,5 +13,5 @@ val categoryItems = listOf(
     Category(R.drawable.food_0, "음식", foodExpressions),
     Category(R.drawable.useful_0, "생활용품", usefulExpressions),
     Category(R.drawable.place_0, "장소", placeExpressions),
-    Category(R.drawable.number_0, "번호", numberExpressions),
+    Category(R.drawable.number, "번호", numberExpressions),
 )
