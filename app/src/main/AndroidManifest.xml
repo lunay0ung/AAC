@@ -10,11 +10,11 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AAC">
         <activity
-            android:name=".MainActivity"
+            android:name=".SecondActivity"
             android:exported="true"
             android:label="@string/app_name"
             android:screenOrientation="landscape"
-            android:theme="@style/Theme.AAC">
+            android:theme="@style/AppCompat">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
