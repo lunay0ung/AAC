@@ -21,11 +21,13 @@ class SecondActivity : FragmentActivity(), ParentCallback {
     private lateinit var mainViewModel: MainViewModel
     private lateinit var binding: ActivitySecondBinding
     private lateinit var itemAdapter: ItemAdapter
-    private var selectedItem = categoryItems[0] as Item
 
     private val editText by lazy {
         binding.headerLayout.editText
     }
+
+    private var selectedItem = categoryItems[0] as Item
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -60,6 +62,10 @@ class SecondActivity : FragmentActivity(), ParentCallback {
 
             headerLayout.homeButton.setOnClickListener {
                 removeExpressions()
+            }
+
+            headerLayout.cancelButton.setOnClickListener {
+                editText.text?.clear()
             }
         }
     }
