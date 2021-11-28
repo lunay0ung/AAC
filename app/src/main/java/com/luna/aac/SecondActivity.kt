@@ -2,9 +2,9 @@ package com.luna.aac
 
 import android.annotation.SuppressLint
 import android.os.Bundle
+import android.speech.tts.TextToSpeech
 import android.util.Log
 import android.view.View
-import androidx.activity.viewModels
 import androidx.core.os.bundleOf
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.FragmentActivity
@@ -15,21 +15,27 @@ import com.luna.aac.data.Expression
 import com.luna.aac.data.Item
 import com.luna.aac.data.categoryItems
 import com.luna.aac.databinding.ActivitySecondBinding
+import java.util.*
 import kotlin.math.exp
 
 @SuppressLint("NotifyDataSetChanged")
-class SecondActivity : FragmentActivity(), ParentCallback {
+class SecondActivity : FragmentActivity(), TextToSpeech.OnInitListener, ParentCallback {
 
+    private val TAG = "luna: " + SecondActivity::class.java.simpleName
     private lateinit var mainViewModel: MainViewModel
     private lateinit var binding: ActivitySecondBinding
     private lateinit var itemAdapter: ItemAdapter
+    private lateinit var tts: TextToSpeech
 
     private val editText by lazy {
         binding.headerLayout.editText
     }
 
-    private var selectedItem = categoryItems[0] as Item
+    private val speakButton by lazy {
+        binding.headerLayout.speakButton
+    }
 
+    private var selectedItem = categoryItems[0] as Item
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,6 +44,7 @@ class SecondActivity : FragmentActivity(), ParentCallback {
             this.parentCallback = this@SecondActivity
         }
 
+        tts = TextToSpeech(this, this)
         initUi()
     }
 
@@ -74,8 +81,8 @@ class SecondActivity : FragmentActivity(), ParentCallback {
                     editText.setText("저기요,")
                 }
 
-                this.homeButton.setOnClickListener {
-                    removeExpressions()
+                speakButton.setOnClickListener {
+                    playExpression()
                 }
 
                 this.cancelButton.setOnClickListener {
@@ -85,7 +92,30 @@ class SecondActivity : FragmentActivity(), ParentCallback {
         }
     }
 
-    fun showExpressions(item: Item) {
+
+    override fun onInit(status: Int) {
+        if (status == TextToSpeech.SUCCESS) {
+            val isTtsActivated = !(tts.setLanguage(Locale.KOREA) == TextToSpeech.LANG_MISSING_DATA
+                    || tts.setLanguage(Locale.KOREA) == TextToSpeech.LANG_NOT_SUPPORTED)
+
+            speakButton.apply {
+                this.isEnabled = isTtsActivated
+                this.alpha = if (isTtsActivated) 1f else 0.1f
+            }
+
+            if (!isTtsActivated) Log.e(TAG, "!isTtsActivated")
+
+        } else {
+            Log.e(TAG, "init failed")
+        }
+    }
+
+    private fun playExpression() {
+        val expression = editText.text.toString()
+        tts.speak(expression, TextToSpeech.QUEUE_FLUSH, null, "")
+    }
+
+    private fun showExpressions(item: Item) {
         var fragment = supportFragmentManager.findFragmentById(binding.fragmentContainer.id)
         val transaction = supportFragmentManager.beginTransaction()
         val bundle = bundleOf(
@@ -123,6 +153,10 @@ class SecondActivity : FragmentActivity(), ParentCallback {
     }
 
     override fun onDestroy() {
+        tts.let {
+            it.stop()
+            it.shutdown()
+        }
         super.onDestroy()
     }
 }
