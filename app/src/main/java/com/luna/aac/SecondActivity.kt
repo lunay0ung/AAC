@@ -3,6 +3,8 @@ package com.luna.aac
 import android.annotation.SuppressLint
 import android.os.Bundle
 import android.speech.tts.TextToSpeech
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
 import android.view.View
 import androidx.core.os.bundleOf
@@ -37,6 +39,20 @@ class SecondActivity : FragmentActivity(), TextToSpeech.OnInitListener, ParentCa
 
     private var selectedItem = categoryItems[0] as Item
 
+    private val textWatcher = object : TextWatcher {
+        override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+
+        }
+
+        override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+        }
+
+        override fun afterTextChanged(p0: Editable?) {
+            speakButton.alpha = if(editText.text.isBlank()) 0.1f else 1f
+            speakButton.isEnabled = editText.text.isNotBlank()
+        }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_second)
@@ -46,6 +62,8 @@ class SecondActivity : FragmentActivity(), TextToSpeech.OnInitListener, ParentCa
 
         tts = TextToSpeech(this, this)
         initUi()
+
+        editText.addTextChangedListener(textWatcher)
     }
 
     private fun initUi() {
@@ -157,6 +175,7 @@ class SecondActivity : FragmentActivity(), TextToSpeech.OnInitListener, ParentCa
             it.stop()
             it.shutdown()
         }
+        editText.removeTextChangedListener(textWatcher)
         super.onDestroy()
     }
 }
