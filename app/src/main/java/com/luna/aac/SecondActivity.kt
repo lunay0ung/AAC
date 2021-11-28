@@ -18,7 +18,6 @@ import com.luna.aac.data.Item
 import com.luna.aac.data.categoryItems
 import com.luna.aac.databinding.ActivitySecondBinding
 import java.util.*
-import kotlin.math.exp
 
 @SuppressLint("NotifyDataSetChanged")
 class SecondActivity : FragmentActivity(), TextToSpeech.OnInitListener, ParentCallback {
@@ -56,11 +55,12 @@ class SecondActivity : FragmentActivity(), TextToSpeech.OnInitListener, ParentCa
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_second)
-        mainViewModel = ViewModelProvider(this).get(MainViewModel::class.java).apply {
+        mainViewModel = ViewModelProvider(this)[MainViewModel::class.java].apply {
             this.parentCallback = this@SecondActivity
         }
 
         tts = TextToSpeech(this, this)
+
         initUi()
 
         editText.addTextChangedListener(textWatcher)
@@ -88,19 +88,19 @@ class SecondActivity : FragmentActivity(), TextToSpeech.OnInitListener, ParentCa
 
             headerLayout.apply {
                 this.motherButton.setOnClickListener {
-                    editText.setText("엄마,")
+                    editText.setText("엄마")
                 }
 
                 this.teacherButton.setOnClickListener {
-                    editText.setText("선생님,")
+                    editText.setText("선생님")
                 }
 
                 this.helpButton.setOnClickListener {
-                    editText.setText("저기요,")
+                    editText.setText("저기요")
                 }
 
                 speakButton.setOnClickListener {
-                    playExpression()
+                    playSentence()
                 }
 
                 this.cancelButton.setOnClickListener {
@@ -118,7 +118,7 @@ class SecondActivity : FragmentActivity(), TextToSpeech.OnInitListener, ParentCa
 
             speakButton.apply {
                 this.isEnabled = isTtsActivated
-                this.alpha = if (isTtsActivated) 1f else 0.1f
+                this.visibility = if (isTtsActivated) View.VISIBLE  else View.INVISIBLE
             }
 
             if (!isTtsActivated) Log.e(TAG, "!isTtsActivated")
@@ -128,7 +128,7 @@ class SecondActivity : FragmentActivity(), TextToSpeech.OnInitListener, ParentCa
         }
     }
 
-    private fun playExpression() {
+    private fun playSentence() {
         val expression = editText.text.toString()
         tts.speak(expression, TextToSpeech.QUEUE_FLUSH, null, "")
     }
@@ -162,7 +162,8 @@ class SecondActivity : FragmentActivity(), TextToSpeech.OnInitListener, ParentCa
 
     override fun onSelectExpression(expression: Expression) {
         editText.setSelection(editText.text.length)
-        editText.append(" "+expression.title)
+        editText.append(" ")
+        editText.append(expression.title)
         editText.setSelection(editText.text.length)
     }
 
