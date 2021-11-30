@@ -91,6 +91,10 @@ class SecondActivity : FragmentActivity(), TextToSpeech.OnInitListener, ParentCa
                     editText.setText("엄마")
                 }
 
+                this.fatherButton.setOnClickListener {
+                    editText.setText("아빠")
+                }
+
                 this.teacherButton.setOnClickListener {
                     editText.setText("선생님")
                 }

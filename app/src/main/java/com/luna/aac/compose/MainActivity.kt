@@ -70,7 +70,7 @@ fun SetHomeButton() {
             ),
                 onClick = { }) {
                 Image(
-                    painter = painterResource(id = R.drawable.teacher_),
+                    painter = painterResource(id = R.drawable.teacher),
                     contentDescription = null,
                     contentScale = ContentScale.Crop
                 )
