@@ -66,7 +66,7 @@ val feelingExpressions = listOf(
     Expression(R.drawable.boring, "재미없어요"),
     Expression(R.drawable.scary, "무서워요"),
     Expression(R.drawable.mad, "화나요"),
-    Expression(R.drawable.not_tasty, "맛없어요"),
+    Expression(R.drawable.not_tasty, "맛 없어요"),
     Expression(R.drawable.back_button, "뒤로 가기")
 )
 
